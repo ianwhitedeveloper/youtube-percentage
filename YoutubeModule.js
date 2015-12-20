@@ -86,14 +86,7 @@
 
                 window.onYouTubeIframeAPIReady = function() {
                     console.log('ready');
-                    $('body').on(
-                        'click', 
-                        '[rel="js-youtube-play"]', 
-                        (e) => { 
-                            var videoId = $(e.target).data('vid-id');
-                            createPlayer(videoId);
-                        }
-                    );                
+                    EVT.emit('youTubeIframeAPIReady');
                 };
         }
 
