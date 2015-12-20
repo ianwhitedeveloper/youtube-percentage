@@ -6,6 +6,7 @@ function timeEvent(data) {
 }
 
 function youTubeIframeAPIReady(data) {
+    console.log('youTubeIframeAPIReady');
     $('body').on(
         'click', 
         '[rel="js-youtube-play"]', 
@@ -16,9 +17,24 @@ function youTubeIframeAPIReady(data) {
     );       
 }
 
+function youtubePlayerReady() {
+    console.log('youtubePlayerReady');
+}
+
+function YTPlayerStatePLAYING() {
+    console.log('YTPlayerStatePLAYING');
+}
+
+function YTPlayerInit() {
+    console.log('YTPlayerInit');
+}
+
 $(document).ready(() => {
     YoutubeModule.init();
     EVT.emit('init');
     EVT.on('timeEvent', timeEvent);
     EVT.on('youTubeIframeAPIReady', youTubeIframeAPIReady);
+    EVT.on('youtubePlayerReady', youtubePlayerReady);
+    EVT.on('YTPlayerStatePLAYING', YTPlayerStatePLAYING);
+    EVT.on('YTPlayerInit', YTPlayerInit);
 });

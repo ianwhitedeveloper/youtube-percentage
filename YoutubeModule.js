@@ -6,22 +6,21 @@
             started;
 
         function onPlayerReady() {
-            console.log('player ready');
             player.playVideo();
+            EVT.emit('youtubePlayerReady');
         }
 
         function onPlayerStateChange(e) {
-            console.log('state change');
             switch (e.data) {
                 case !started && YT.PlayerState.PLAYING:
-                    console.log('Playing');
+                    EVT.emit('YTPlayerStatePLAYING');
                     started = true;
                     startPlaybackProgress();
                     break;
                 case -1:
                 case YT.PlayerState.ENDED:
                 case YT.PlayerState.CUED:
-                    console.log('restart');
+                    EVT.emit('YTPlayerInit');
                     started = false;
                     break;
                 default:
