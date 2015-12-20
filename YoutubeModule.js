@@ -3,10 +3,12 @@
         var src     = 'https://www.youtube.com/iframe_api',
             player,
             progressTimer,
-            started;
+            playerTotalTime,
+            started,
+            q1 = false, q2 = false, q3 = false, q4 = false;
 
         function onPlayerReady() {
-            player.playVideo();
+            playerTotalTime = player.getDuration();
             EVT.emit('youtubePlayerReady');
         }
 
@@ -15,6 +17,7 @@
                 case !started && YT.PlayerState.PLAYING:
                     EVT.emit('YTPlayerStartPLAYING');
                     started = true;
+                case YT.PlayerState.PLAYING:
                     startPlaybackProgress();
                     break;
                 case -1:
@@ -22,7 +25,7 @@
                 case YT.PlayerState.CUED:
                     EVT.emit('YTPlayerInit');
                     started = false;
-                    break;
+                    q1 = q2 = q3 = q4 = false;
                 default:
                     clearInterval(progressTimer);
                     break;
@@ -30,51 +33,33 @@
         }
 
         function startPlaybackProgress() {
-            var twentyFive = new $.Deferred(),
-                fifty = new $.Deferred(),
-                seventyFive = new $.Deferred(),
-                oneHundred = new $.Deferred(),
-                playerTotalTime = player.getDuration();
-
             progressTimer = setInterval(() => {
                 var playerCurrentTime = Math.ceil(player.getCurrentTime()),
                     playerTimeDifference = (playerCurrentTime / playerTotalTime) * 100,
                     playerTimePercent = Math.ceil(playerTimeDifference);
 
                 switch(true) {
-                  case (playerTimePercent >= 25 && playerTimePercent < 50):
-                    twentyFive.resolve();
+                  case (!q1 && playerTimePercent >= 25 && playerTimePercent < 50):
+                    EVT.emit('timeEvent', '25')
+                    q1 = true;
                     break;
-                  case (playerTimePercent >= 50 && playerTimePercent < 75):
-                    fifty.resolve();
+                  case (!q2 && playerTimePercent >= 50 && playerTimePercent < 75):
+                    EVT.emit('timeEvent', '50')
+                    q2 = true;
                     break;
-                  case (playerTimePercent >= 75 && playerTimePercent < 100):
-                    seventyFive.resolve();
+                  case (!q3 && playerTimePercent >= 75 && playerTimePercent < 100):
+                    EVT.emit('timeEvent', '75')
+                    q3 = true;
                     break;
-                  case (playerTimePercent >= 100):
-                    oneHundred.resolve();
+                  case (!q4 && playerTimePercent >= 100):
+                    EVT.emit('timeEvent', '100')
+                    q4 = true;
                     break;
                   default:
                     break;
                 };
+                console.log('interval running');
             }, 100);
-
-            twentyFive.then(() => {
-                EVT.emit('timeEvent', '25')
-            })
-
-            fifty.then(() => {
-                EVT.emit('timeEvent', '50')
-            })
-
-            seventyFive.then(() => {
-                EVT.emit('timeEvent', '75')
-            })
-
-            oneHundred.then(() => {
-                EVT.emit('timeEvent', '100')
-            })
-            
         }
 
         function init() {
@@ -89,7 +74,9 @@
         }
 
         function createPlayer(videoId) {
+            
             if (player) {
+                clearInterval(progressTimer);
                 player.destroy();
             }
 
@@ -99,7 +86,7 @@
                 videoId: videoId,
                 playerVars: {
                   rel: 0,
-                  autoplay: 0,
+                  autoplay: 1,
                   autohide: 1,
                   showinfo: 0,
                   modestbranding: 0,
@@ -115,10 +102,12 @@
         EVT.on('init', init);
         EVT.on('createPlayer', createPlayer);
 
-        return {
+        var publicAPI = {
             init,
             createPlayer
         }
+
+        return publicAPI;
     })();
 
     if(typeof module !== 'undefined' && module.exports) {
