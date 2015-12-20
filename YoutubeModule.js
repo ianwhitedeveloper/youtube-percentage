@@ -20,13 +20,13 @@
                 case YT.PlayerState.PLAYING:
                     startPlaybackProgress();
                     break;
-                case -1:
+                case -1: // Unstarted
                 case YT.PlayerState.ENDED:
                 case YT.PlayerState.CUED:
                     EVT.emit('YTPlayerInit');
                     started = false;
                     q1 = q2 = q3 = q4 = false;
-                default:
+                default: // buffering, paused, video cued
                     clearInterval(progressTimer);
                     break;
             }
@@ -39,15 +39,15 @@
                     playerTimePercent = Math.ceil(playerTimeDifference);
 
                 switch(true) {
-                  case (!q1 && playerTimePercent >= 25 && playerTimePercent < 50):
+                  case (!q1 && playerTimePercent >= 25):
                     EVT.emit('timeEvent', '25')
                     q1 = true;
                     break;
-                  case (!q2 && playerTimePercent >= 50 && playerTimePercent < 75):
+                  case (!q2 && playerTimePercent >= 50):
                     EVT.emit('timeEvent', '50')
                     q2 = true;
                     break;
-                  case (!q3 && playerTimePercent >= 75 && playerTimePercent < 100):
+                  case (!q3 && playerTimePercent >= 75):
                     EVT.emit('timeEvent', '75')
                     q3 = true;
                     break;
@@ -74,6 +74,7 @@
         }
 
         function createPlayer(videoId) {
+            q1 = q2 = q3 = q4 = false;
             
             if (player) {
                 clearInterval(progressTimer);
