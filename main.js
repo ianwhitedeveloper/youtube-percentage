@@ -1,7 +1,7 @@
 var EVT = new EventEmitter2();
 
-(($,window) => {
-    var CustomYoutubeFunctionsModule = (() => {
+(function ($,window) {
+    var CustomYoutubeFunctionsModule = (function () {
         function timeEvent(data) {
             console.log('data ' , data);
             // call WT function here
@@ -12,7 +12,7 @@ var EVT = new EventEmitter2();
             $('body').on(
                 'click', 
                 '[rel="js-youtube-play"]', 
-                (e) => { 
+                function (e) { 
                     var videoId = $(e.target).data('vid-id');
                     EVT.emit('createPlayer', videoId)
                 }
@@ -27,14 +27,14 @@ var EVT = new EventEmitter2();
             console.log('YTPlayerStartPLAYING');
         }
 
-        function YTPlayerInit() {
-            console.log('YTPlayerInit');
+        function YTPlayerReInit() {
+            console.log('YTPlayerReInit');
         }
 
         var publicAPI = {
             timeEvent,
             youtubePlayerReady,
-            YTPlayerInit,
+            YTPlayerReInit,
             YTPlayerStartPLAYING,
             youTubeIframeAPIReady
         }
@@ -49,12 +49,12 @@ var EVT = new EventEmitter2();
     }
 })(jQuery,window);
 
-$(document).ready(() => {
+$(document).ready(function () {
     YoutubeModule.init();
     EVT.emit('init');
     EVT.on('timeEvent', CustomYoutubeFunctionsModule.timeEvent);
     EVT.on('youTubeIframeAPIReady', CustomYoutubeFunctionsModule.youTubeIframeAPIReady);
     EVT.on('youtubePlayerReady', CustomYoutubeFunctionsModule.youtubePlayerReady);
     EVT.on('YTPlayerStartPLAYING', CustomYoutubeFunctionsModule.YTPlayerStartPLAYING);
-    EVT.on('YTPlayerInit', CustomYoutubeFunctionsModule.YTPlayerInit);
+    EVT.on('YTPlayerReInit', CustomYoutubeFunctionsModule.YTPlayerReInit);
 });

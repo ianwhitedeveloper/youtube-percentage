@@ -1,5 +1,5 @@
-(($,window) => {
-    var YoutubeModule = (() => {
+(function ($,window){
+    var YoutubeModule = (function (){
         var src     = 'https://www.youtube.com/iframe_api',
             player,
             progressTimer,
@@ -15,17 +15,17 @@
         function onPlayerStateChange(e) {
             switch (e.data) {
                 case !started && YT.PlayerState.PLAYING:
-                    EVT.emit('YTPlayerStartPLAYING');
                     started = true;
+                    EVT.emit('YTPlayerStartPLAYING');
                 case YT.PlayerState.PLAYING:
                     startPlaybackProgress();
                     break;
                 case -1: // Unstarted
                 case YT.PlayerState.ENDED:
                 case YT.PlayerState.CUED:
-                    EVT.emit('YTPlayerInit');
                     started = false;
                     q1 = q2 = q3 = q4 = false;
+                    EVT.emit('YTPlayerReInit');
                 default: // buffering, paused, video cued
                     clearInterval(progressTimer);
                     break;
@@ -33,27 +33,27 @@
         }
 
         function startPlaybackProgress() {
-            progressTimer = setInterval(() => {
+            progressTimer = setInterval(function (){
                 var playerCurrentTime = Math.ceil(player.getCurrentTime()),
                     playerTimeDifference = (playerCurrentTime / playerTotalTime) * 100,
                     playerTimePercent = Math.ceil(playerTimeDifference);
 
                 switch(true) {
                   case (!q1 && playerTimePercent >= 25):
-                    EVT.emit('timeEvent', '25')
                     q1 = true;
+                    EVT.emit('timeEvent', '25')
                     break;
                   case (!q2 && playerTimePercent >= 50):
-                    EVT.emit('timeEvent', '50')
                     q2 = true;
+                    EVT.emit('timeEvent', '50')
                     break;
                   case (!q3 && playerTimePercent >= 75):
-                    EVT.emit('timeEvent', '75')
                     q3 = true;
+                    EVT.emit('timeEvent', '75')
                     break;
                   case (!q4 && playerTimePercent >= 100):
-                    EVT.emit('timeEvent', '100')
                     q4 = true;
+                    EVT.emit('timeEvent', '100')
                     break;
                   default:
                     break;
