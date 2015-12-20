@@ -13,7 +13,7 @@
         function onPlayerStateChange(e) {
             switch (e.data) {
                 case !started && YT.PlayerState.PLAYING:
-                    EVT.emit('YTPlayerStatePLAYING');
+                    EVT.emit('YTPlayerStartPLAYING');
                     started = true;
                     startPlaybackProgress();
                     break;

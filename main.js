@@ -21,8 +21,8 @@ function youtubePlayerReady() {
     console.log('youtubePlayerReady');
 }
 
-function YTPlayerStatePLAYING() {
-    console.log('YTPlayerStatePLAYING');
+function YTPlayerStartPLAYING() {
+    console.log('YTPlayerStartPLAYING');
 }
 
 function YTPlayerInit() {
@@ -35,6 +35,6 @@ $(document).ready(() => {
     EVT.on('timeEvent', timeEvent);
     EVT.on('youTubeIframeAPIReady', youTubeIframeAPIReady);
     EVT.on('youtubePlayerReady', youtubePlayerReady);
-    EVT.on('YTPlayerStatePLAYING', YTPlayerStatePLAYING);
+    EVT.on('YTPlayerStartPLAYING', YTPlayerStartPLAYING);
     EVT.on('YTPlayerInit', YTPlayerInit);
 });
