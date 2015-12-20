@@ -11,7 +11,7 @@ function youTubeIframeAPIReady(data) {
         '[rel="js-youtube-play"]', 
         (e) => { 
             var videoId = $(e.target).data('vid-id');
-            YoutubeModule.createPlayer(videoId);
+            EVT.emit('createPlayer', videoId)
         }
     );       
 }

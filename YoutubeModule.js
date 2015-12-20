@@ -85,7 +85,6 @@
                 document.body.appendChild(script);
 
                 window.onYouTubeIframeAPIReady = function() {
-                    console.log('ready');
                     EVT.emit('youTubeIframeAPIReady');
                 };
         }
@@ -115,6 +114,7 @@
         }
 
         EVT.on('init', init);
+        EVT.on('createPlayer', createPlayer);
 
         return {
             init,
