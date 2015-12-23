@@ -104,8 +104,8 @@
         EVT.on('createPlayer', createPlayer);
 
         var publicAPI = {
-            init,
-            createPlayer
+            init: init,
+            createPlayer: createPlayer
         }
 
         return publicAPI;

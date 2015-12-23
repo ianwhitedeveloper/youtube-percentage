@@ -32,11 +32,11 @@ var EVT = new EventEmitter2();
         }
 
         var publicAPI = {
-            timeEvent,
-            youtubePlayerReady,
-            YTPlayerReInit,
-            YTPlayerStartPLAYING,
-            youTubeIframeAPIReady
+            timeEvent: timeEvent,
+            youtubePlayerReady: youtubePlayerReady,
+            YTPlayerReInit: YTPlayerReInit,
+            YTPlayerStartPLAYING: YTPlayerStartPLAYING,
+            youTubeIframeAPIReady: youTubeIframeAPIReady
         }
 
         return publicAPI;
