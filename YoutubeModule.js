@@ -16,49 +16,43 @@
             switch (e.data) {
                 case !started && YT.PlayerState.PLAYING:
                     started = true;
-                    EVT.emit('YTPlayerStartPLAYING');
+                    EVT.emit('YTPlayerFirstStart');
                 case YT.PlayerState.PLAYING:
                     startPlaybackProgress();
                     break;
-                case -1: // Unstarted
-                case YT.PlayerState.ENDED:
-                case YT.PlayerState.CUED:
-                    started = false;
-                    q1 = q2 = q3 = q4 = false;
-                    EVT.emit('YTPlayerReInit');
-                default: // buffering, paused, video cued
+                default: // buffering, paused, video cued, unstarted 
                     clearInterval(progressTimer);
+                    q1 = q2 = q3 = q4 = false;
                     break;
             }
         }
 
         function startPlaybackProgress() {
             progressTimer = setInterval(function (){
-                var playerCurrentTime = Math.ceil(player.getCurrentTime()),
+                var playerCurrentTime = Math.floor(player.getCurrentTime()),
                     playerTimeDifference = (playerCurrentTime / playerTotalTime) * 100,
-                    playerTimePercent = Math.ceil(playerTimeDifference);
+                    playerTimePercent = Math.floor(playerTimeDifference);
 
                 switch(true) {
-                  case (!q1 && playerTimePercent >= 25):
+                  case (!q1 && playerTimePercent >= 25 && playerTimePercent < 50):
                     q1 = true;
-                    EVT.emit('timeEvent', '25')
+                    EVT.emit('quartileEvent', '25')
                     break;
-                  case (!q2 && playerTimePercent >= 50):
+                  case (!q2 && playerTimePercent >= 50 && playerTimePercent < 75):
                     q2 = true;
-                    EVT.emit('timeEvent', '50')
+                    EVT.emit('quartileEvent', '50')
                     break;
-                  case (!q3 && playerTimePercent >= 75):
+                  case (!q3 && playerTimePercent >= 75 && playerTimePercent < 99):
                     q3 = true;
-                    EVT.emit('timeEvent', '75')
+                    EVT.emit('quartileEvent', '75')
                     break;
-                  case (!q4 && playerTimePercent >= 100):
+                  case (!q4 && playerTimePercent >= 99):
                     q4 = true;
-                    EVT.emit('timeEvent', '100')
+                    EVT.emit('quartileEvent', '100')
                     break;
                   default:
                     break;
                 };
-                console.log('interval running');
             }, 100);
         }
 
@@ -74,8 +68,6 @@
         }
 
         function createPlayer(videoId) {
-            q1 = q2 = q3 = q4 = false;
-            
             if (player) {
                 clearInterval(progressTimer);
                 player.destroy();
@@ -98,6 +90,7 @@
                   'onStateChange': onPlayerStateChange
                 }
               });
+            started = false;
         }
 
         EVT.on('init', init);

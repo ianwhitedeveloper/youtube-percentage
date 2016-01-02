@@ -2,7 +2,7 @@ var EVT = new EventEmitter2();
 
 (function ($,window) {
     var CustomYoutubeFunctionsModule = (function () {
-        function timeEvent(data) {
+        function quartileEvent(data) {
             console.log('data ' , data);
             // call WT function here
         }
@@ -23,8 +23,8 @@ var EVT = new EventEmitter2();
             console.log('youtubePlayerReady');
         }
 
-        function YTPlayerStartPLAYING() {
-            console.log('YTPlayerStartPLAYING');
+        function YTPlayerFirstStart() {
+            console.log('YTPlayerFirstStart');
         }
 
         function YTPlayerReInit() {
@@ -32,10 +32,10 @@ var EVT = new EventEmitter2();
         }
 
         var publicAPI = {
-            timeEvent: timeEvent,
+            quartileEvent: quartileEvent,
             youtubePlayerReady: youtubePlayerReady,
             YTPlayerReInit: YTPlayerReInit,
-            YTPlayerStartPLAYING: YTPlayerStartPLAYING,
+            YTPlayerFirstStart: YTPlayerFirstStart,
             youTubeIframeAPIReady: youTubeIframeAPIReady
         }
 
@@ -52,9 +52,9 @@ var EVT = new EventEmitter2();
 $(document).ready(function () {
     YoutubeModule.init();
     EVT.emit('init');
-    EVT.on('timeEvent', CustomYoutubeFunctionsModule.timeEvent);
+    EVT.on('quartileEvent', CustomYoutubeFunctionsModule.quartileEvent);
     EVT.on('youTubeIframeAPIReady', CustomYoutubeFunctionsModule.youTubeIframeAPIReady);
     EVT.on('youtubePlayerReady', CustomYoutubeFunctionsModule.youtubePlayerReady);
-    EVT.on('YTPlayerStartPLAYING', CustomYoutubeFunctionsModule.YTPlayerStartPLAYING);
+    EVT.on('YTPlayerFirstStart', CustomYoutubeFunctionsModule.YTPlayerFirstStart);
     EVT.on('YTPlayerReInit', CustomYoutubeFunctionsModule.YTPlayerReInit);
 });
