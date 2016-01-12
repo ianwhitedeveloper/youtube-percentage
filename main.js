@@ -2,7 +2,7 @@ var EVT = new EventEmitter2();
 
 (function ($,window) {
     var CustomYoutubeFunctionsModule = (function () {
-        function quartileEvent(data) {
+        function percentageEvent(data) {
             console.log('data ' , data);
             // call WT function here
         }
@@ -32,7 +32,7 @@ var EVT = new EventEmitter2();
         }
 
         var publicAPI = {
-            quartileEvent: quartileEvent,
+            percentageEvent: percentageEvent,
             youtubePlayerReady: youtubePlayerReady,
             YTPlayerReInit: YTPlayerReInit,
             YTPlayerFirstStart: YTPlayerFirstStart,
@@ -52,7 +52,7 @@ var EVT = new EventEmitter2();
 $(document).ready(function () {
     YoutubeModule.init();
     EVT.emit('init');
-    EVT.on('quartileEvent', CustomYoutubeFunctionsModule.quartileEvent);
+    EVT.on('percentageEvent', CustomYoutubeFunctionsModule.percentageEvent);
     EVT.on('youTubeIframeAPIReady', CustomYoutubeFunctionsModule.youTubeIframeAPIReady);
     EVT.on('youtubePlayerReady', CustomYoutubeFunctionsModule.youtubePlayerReady);
     EVT.on('YTPlayerFirstStart', CustomYoutubeFunctionsModule.YTPlayerFirstStart);

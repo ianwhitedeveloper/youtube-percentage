@@ -36,19 +36,19 @@
                 switch(true) {
                   case (!q1 && playerTimePercent >= 25 && playerTimePercent < 50):
                     q1 = true;
-                    EVT.emit('quartileEvent', '25')
+                    EVT.emit('percentageEvent', '25')
                     break;
                   case (!q2 && playerTimePercent >= 50 && playerTimePercent < 75):
                     q2 = true;
-                    EVT.emit('quartileEvent', '50')
+                    EVT.emit('percentageEvent', '50')
                     break;
                   case (!q3 && playerTimePercent >= 75 && playerTimePercent < 99):
                     q3 = true;
-                    EVT.emit('quartileEvent', '75')
+                    EVT.emit('percentageEvent', '75')
                     break;
                   case (!q4 && playerTimePercent >= 99):
                     q4 = true;
-                    EVT.emit('quartileEvent', '100')
+                    EVT.emit('percentageEvent', '100')
                     break;
                   default:
                     break;
