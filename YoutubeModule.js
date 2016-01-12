@@ -1,4 +1,4 @@
-(function ($,window){
+(function (window){
     var YoutubeModule = (function (){
         var src     = 'https://www.youtube.com/iframe_api',
             player,
@@ -109,4 +109,4 @@
     } else {
         window.YoutubeModule = YoutubeModule;
     }
-})(jQuery,window);
+})(window);
